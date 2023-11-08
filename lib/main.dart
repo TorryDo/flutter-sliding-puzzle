@@ -1,13 +1,11 @@
 import 'dart:io';
 
-import 'package:slide_puzzle/config/ui.dart';
-import 'package:slide_puzzle/play_games.dart';
-import 'package:slide_puzzle/utils/platform.dart';
-import 'package:slide_puzzle/widgets/game/page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:slide_puzzle/config/ui.dart';
+import 'package:slide_puzzle/utils/platform.dart';
+import 'package:slide_puzzle/widgets/game/page.dart';
 
 void main() {
   // For play billing library 2.0 on Android, it is mandatory to call
@@ -16,13 +14,12 @@ void main() {
   // InAppPurchaseConnection.enablePendingPurchases();
   _setTargetPlatformForDesktop();
   runApp(
-    // PlayGamesContainer(
-    //   child: ConfigUiContainer(
-    //     child: MyApp(),
-    //   ),
-    // ),
-    MyApp()
-  );
+      // PlayGamesContainer(
+      //   child: ConfigUiContainer(
+      //     child: MyApp(),
+      //   ),
+      // ),
+      const MyApp());
 }
 
 /// If the current platform is desktop, override the default platform to
@@ -41,9 +38,11 @@ void _setTargetPlatformForDesktop() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final title = 'Game of Fifteen';
+    const title = 'Sliding Puzzle';
     return _MyMaterialApp(title: title);
   }
 }
@@ -53,11 +52,13 @@ class MyApp extends StatelessWidget {
 abstract class _MyPlatformApp extends StatelessWidget {
   final String title;
 
-  _MyPlatformApp({required this.title});
+  const _MyPlatformApp({required this.title});
 }
 
 class _MyMaterialApp extends _MyPlatformApp {
-  _MyMaterialApp({required String title}) : super(title: title);
+  const _MyMaterialApp({
+    required String title,
+  }) : super(title: title);
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +80,9 @@ class _MyMaterialApp extends _MyPlatformApp {
 
     final baseDarkTheme = applyDecor(ThemeData(
       brightness: Brightness.dark,
-      canvasColor: Color(0xFF121212),
-      backgroundColor: Color(0xFF121212),
-      cardColor: Color(0xFF1E1E1E),
+      canvasColor: const Color(0xFF121212),
+      backgroundColor: const Color(0xFF121212),
+      cardColor: const Color(0xFF1E1E1E),
     ));
     final baseLightTheme = applyDecor(ThemeData.light());
 
@@ -125,17 +126,6 @@ class _MyMaterialApp extends _MyPlatformApp {
           return GamePage();
         },
       ),
-    );
-  }
-}
-
-class _MyCupertinoApp extends _MyPlatformApp {
-  _MyCupertinoApp({required String title}) : super(title: title);
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoApp(
-      title: title,
     );
   }
 }

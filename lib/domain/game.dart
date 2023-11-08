@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/chip.dart';
 import 'package:slide_puzzle/domain/starting_positions.dart';
-import 'package:meta/meta.dart';
 
 abstract class Game {
   static Game instance = _GameImpl();
@@ -108,7 +107,7 @@ class _GameImpl implements Game {
           x--;
           break;
         default:
-          throw StateError("You have choosen an uknown direction.");
+          throw StateError("You have chosen an known direction.");
           break;
       }
 
@@ -210,7 +209,7 @@ class _GameImpl implements Game {
         return y == board.blank.y && x >= start && x <= end;
       });
     } else {
-      return Iterable.empty();
+      return const Iterable.empty();
     }
   }
 }

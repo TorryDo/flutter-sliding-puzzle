@@ -5,11 +5,9 @@ import 'package:slide_puzzle/config/ui.dart';
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/utils/platform.dart';
 import 'package:slide_puzzle/widgets/about/dialog.dart';
-import 'package:slide_puzzle/widgets/donate/dialog.dart';
 import 'package:slide_puzzle/widgets/game/board.dart';
 import 'package:slide_puzzle/widgets/game/material/page.dart';
 import 'package:flutter/material.dart' hide AboutDialog;
-import 'package:flutter/widgets.dart';
 
 Widget createMoreBottomSheet(
   BuildContext context, {
@@ -21,8 +19,8 @@ Widget createMoreBottomSheet(
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.all(8.0),
-              padding: EdgeInsets.all(4.0),
+              margin: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.black54
@@ -73,13 +71,13 @@ Widget createMoreBottomSheet(
       );
 
   final items = <Widget>[
-    SizedBox(height: 16),
+    const SizedBox(height: 16),
     Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         IconButton(
           icon: const Icon(
             Icons.info_outline,
@@ -115,8 +113,7 @@ Widget createMoreBottomSheet(
             alignment: Alignment.centerRight,
             child: FloatingActionButton(
               shape: const RoundedRectangleBorder(
-                borderRadius:
-                    const BorderRadius.all(const Radius.circular(16.0)),
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
               ),
               onPressed: () {
                 // Cycle themes like this:

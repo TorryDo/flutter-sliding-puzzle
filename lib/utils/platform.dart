@@ -4,5 +4,3 @@ bool platformCheck(bool Function() block) {
   } catch (e) {}
   return false;
 }
-
-bool platformCheckIsWeb() => platformCheck(() => true);

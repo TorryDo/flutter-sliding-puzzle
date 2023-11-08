@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:slide_puzzle/widgets/auto_size_text.dart';
+import 'package:flutter/material.dart';
 import 'package:slide_puzzle/widgets/game/format.dart';
 import 'package:slide_puzzle/widgets/icons/stopwatch.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// Widget shows the current time of
 /// a game.
@@ -15,7 +13,8 @@ class GameStopwatchWidget extends StatefulWidget {
 
   final double fontSize;
 
-  GameStopwatchWidget({
+  const GameStopwatchWidget({
+    super.key,
     required this.time,
     required this.fontSize,
     this.timeFormatter = formatElapsedTime,
@@ -86,13 +85,13 @@ class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
         ? DateTime.now().millisecondsSinceEpoch - widget.time
         : 0;
     final timeStr = widget.timeFormatter(time);
-    final timeStrAtStartOfMinute = widget.timeFormatter(time - time % (1000 * 60));
+    // final timeStrAtStartOfMinute = widget.timeFormatter(time - time % (1000 * 60));
 
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
         return Transform.scale(
-          alignment: Alignment(0.0, 0.75),
+          alignment: const Alignment(0.0, 0.75),
           scale: 0.8 + 0.2 * animation.value,
           child: child,
         );
@@ -101,24 +100,20 @@ class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            width: 220.0,
-            height: 108.0,
-            // child: AutoSizeText(
-            //   timeStrAtStartOfMinute,
-            //   timeStr,
-            //   maxLines: 1,
-            //   // style: Theme.of(context).textTheme.headline5.copyWith(
-            //   //       fontSize: widget.fontSize,
-            //   //       color: Theme.of(context).textTheme.headline6.color,
-            //   //     ),
-            // ),
-            child: Text(timeStrAtStartOfMinute + '||' + timeStr),
+            width: 200,
+            child: Text(
+              timeStr,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium
+                  ?.copyWith(color: Colors.black, fontSize: widget.fontSize),
+            ),
           ),
           const SizedBox(width: 16.0),
           StopwatchIcon(
             size: 24,
             millis: time,
-            color: Theme.of(context).iconTheme.color ?? Colors.blue,
+            color: Theme.of(context).iconTheme.color ?? Colors.grey,
           ),
         ],
       ),

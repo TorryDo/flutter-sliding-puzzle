@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/result.dart';
 import 'package:slide_puzzle/domain/game.dart';
 import 'package:slide_puzzle/utils/serializable.dart';
-import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class GamePresenterWidget extends StatefulWidget {
   static const SUPPORTED_SIZES = [3, 4, 5];
@@ -16,7 +16,11 @@ class GamePresenterWidget extends StatefulWidget {
 
   final Function(Result)? onSolve;
 
-  GamePresenterWidget({required this.child, this.onSolve});
+  const GamePresenterWidget({
+    super.key,
+    required this.child,
+    this.onSolve,
+  });
 
   static GamePresenterWidgetState of(BuildContext context) {
     return context
@@ -71,8 +75,8 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
       final plainText = _encrypter.decrypt(encrypted, iv: _SALSA_IV);
 
       jsonMap = json.decode(plainText);
-    } catch (FormatException) {
-      jsonMap = Map<String, dynamic>();
+    } on FormatException {
+      jsonMap = <String, dynamic>{};
     }
 
     int elapsedTime = -1;
@@ -87,7 +91,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
       time = deserializer.readInt();
       steps = deserializer.readInt();
       board = deserializer.readDeserializable(boardFactory);
-    } catch (Exception) {}
+    } on Exception {}
 
     final now = DateTime.now().millisecondsSinceEpoch;
     if ( // validate time
@@ -197,8 +201,8 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
 
       var boardFuture;
       if (isPlaying()) {
-        boardFuture =
-            game.shuffle(game.hardest(board!), amount: board!.size * board!.size);
+        boardFuture = game.shuffle(game.hardest(board!),
+            amount: board!.size * board!.size);
       } else {
         boardFuture = _createBoard(board!.size);
       }

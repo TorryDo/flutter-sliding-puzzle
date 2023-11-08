@@ -36,7 +36,7 @@ class ChipDeserializableFactory extends DeserializableHelper<Chip> {
 
   @override
   Chip deserialize(SerializeInput input) {
-    final pd = PointDeserializableFactory();
+    const pd = PointDeserializableFactory();
 
     final number = input.readInt() ?? -1;
     final targetPoint = input.readDeserializable(pd)!;

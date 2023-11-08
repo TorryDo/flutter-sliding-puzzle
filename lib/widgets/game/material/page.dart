@@ -49,8 +49,8 @@ class GameMaterialPage extends StatelessWidget {
           GameStopwatchWidget(
             time: presenter.time,
             fontSize: orientation == Orientation.landscape && !isLargeScreen
-                ? 56.0
-                : 72.0,
+                ? 50.0
+                : 65.0,
           ),
           GameStepsWidget(
             steps: presenter.steps ?? -1,

@@ -9,6 +9,9 @@ class ConfigUiContainer extends StatefulWidget {
   const ConfigUiContainer({super.key, required this.child});
 
   static _ConfigUiContainerState of(BuildContext context) {
+    // return context
+    //     .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()!
+    //     .data;
     return _ConfigUiContainerState();
   }
 

@@ -1,6 +1,5 @@
 import 'package:slide_puzzle/data/result.dart';
 import 'package:slide_puzzle/links.dart';
-import 'package:slide_puzzle/play_games.dart';
 import 'package:slide_puzzle/widgets/game/format.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
@@ -35,21 +34,6 @@ class GameVictoryDialog extends StatelessWidget {
       ),
     ];
 
-    // if (PlayGamesContainer.of(context).isSupported) {
-    //   actions.insert(
-    //     0,
-    //     FloatingActionButton(
-    //       child: const Text("Leaderboard"),
-    //       onPressed: () {
-    //         final playGames = PlayGamesContainer.of(context);
-    //         playGames.showLeaderboard(
-    //           key: PlayGames.getLeaderboardOfSize(result.size),
-    //         );
-    //       },
-    //     ),
-    //   );
-    // }
-
     return AlertDialog(
       title: Center(
         child: Text(
@@ -60,8 +44,7 @@ class GameVictoryDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
-              "You've successfuly completed the ${result.size}x${result.size} puzzle"),
+          Text("You've successfuly completed the ${result.size}x${result.size} puzzle"),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

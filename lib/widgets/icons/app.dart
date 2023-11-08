@@ -3,21 +3,24 @@ import 'package:flutter/material.dart';
 class AppIcon extends StatelessWidget {
   final double size;
 
-  const AppIcon({required this.size}) : super();
+  const AppIcon({
+    super.key,
+    required this.size,
+  });
 
   @override
   Widget build(BuildContext context) {
     final size = this.size ?? IconTheme.of(context).size;
     return Semantics(
       excludeSemantics: true,
-      child: Container(
+      child: SizedBox(
         width: size,
         height: size,
         child: Material(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           elevation: 4.0,
           color: Theme.of(context).primaryColor,
-          child: Center(
+          child: const Center(
             child: Text(
               '15',
               // style: Theme.of(context).primaryTextTheme.bodyText1.copyWith(

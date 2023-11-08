@@ -10,7 +10,7 @@ class GamePlayStopButton extends StatefulWidget {
 
   final Function()? onTap;
 
-  GamePlayStopButton({
+  GamePlayStopButton({super.key,
     required this.isPlaying,
     this.onTap,
   });

@@ -1,10 +1,11 @@
 import 'package:slide_puzzle/links.dart';
 import 'package:slide_puzzle/utils/url.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:package_info/package_info.dart';
 
 class AboutDialog extends StatelessWidget {
+  const AboutDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     const padding = EdgeInsets.symmetric(horizontal: 24);
@@ -17,7 +18,7 @@ class AboutDialog extends StatelessWidget {
     }
 
     return SimpleDialog(
-      title: Text('About'),
+      title: const Text('About'),
       children: <Widget>[
         HorizontalPadding(
             const Text('Game of Fifteen is a free and open source app '
@@ -29,7 +30,7 @@ class AboutDialog extends StatelessWidget {
                 'The complexity of puzzles is similar from game to game.')),
         const SizedBox(height: 24),
         ListTile(
-          leading: Icon(Icons.code, size: 24),
+          leading: const Icon(Icons.code, size: 24),
           contentPadding: padding,
           title: const Text('Join development'),
           onTap: () {
@@ -37,7 +38,7 @@ class AboutDialog extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(Icons.bug_report, size: 24),
+          leading: const Icon(Icons.bug_report, size: 24),
           contentPadding: padding,
           title: const Text('Send bug report'),
           onTap: () {

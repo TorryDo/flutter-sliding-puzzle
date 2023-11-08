@@ -1,11 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart' hide Chip;
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/chip.dart';
 import 'package:slide_puzzle/domain/game.dart';
 import 'package:slide_puzzle/widgets/game/chip.dart';
-import 'package:flutter/material.dart' hide Chip;
-import 'package:flutter/widgets.dart';
 
 class BoardWidget extends StatefulWidget {
   final Board? board;
@@ -18,7 +17,7 @@ class BoardWidget extends StatefulWidget {
 
   final bool isSpeedRunModeEnabled;
 
-  BoardWidget({
+  const BoardWidget({
     super.key,
     required this.board,
     required this.size,
@@ -56,7 +55,8 @@ class _BoardWidgetState extends State<BoardWidget>
     return friction * 61774.04968;
   }
 
-  static double _flingDuration({double friction= _kFriction, required double velocity}) {
+  static double _flingDuration(
+      {double friction = _kFriction, required double velocity}) {
     // See mPhysicalCoeff
     final double scaledFriction = friction * _decelerationForFriction(0.84);
 
@@ -66,7 +66,8 @@ class _BoardWidgetState extends State<BoardWidget>
     return exp(deceleration / (_kDecelerationRate - 1.0));
   }
 
-  static double _flingOffset({double friction = _kFriction, required double velocity}) {
+  static double _flingOffset(
+      {double friction = _kFriction, required double velocity}) {
     var _duration = _flingDuration(friction: friction, velocity: velocity);
     return velocity * _duration / _initialVelocityPenetration;
   }
@@ -116,8 +117,8 @@ class _BoardWidgetState extends State<BoardWidget>
   void _performSetBoard({final Board? newBoard, final Board? oldBoard}) {
     if (newBoard == null) {
       setState(() {
-        // Dispose current animations. This is not necessary, but good
-        // to do.
+        /// Dispose current animations. This is not necessary, but good
+        /// to do.
         chips?.forEach((chip) {
           chip.animations.values.forEach((controller) => controller.dispose());
         });
@@ -129,8 +130,8 @@ class _BoardWidgetState extends State<BoardWidget>
 
     final board = newBoard;
     if (chips == null || board.chips.length != oldBoard?.chips.length) {
-      // The size of the board has been changed...
-      // rebuild everything!
+      /// The size of the board has been changed...
+      /// rebuild everything!
       setState(() {
         final hueStep = 360 / board.chips.length;
 
@@ -145,7 +146,7 @@ class _BoardWidgetState extends State<BoardWidget>
             _onChipChangePosition(chip, wasCurrentPoint, chip.currentPoint,
                 enableColorAnimation: false);
 
-            // Change the color of the chip.
+            /// Change the color of the chip.
             final color =
                 HSLColor.fromAHSL(1, hueStep * chip.number, 0.7, 0.5).toColor();
             _startColorBackgroundAnimation(
@@ -158,18 +159,18 @@ class _BoardWidgetState extends State<BoardWidget>
 
         if (chips != null) {
           if (chips!.length > board.chips.length) {
-            // Remove a few chips with a smooth animation.
+            /// Remove a few chips with a smooth animation.
             chips = chips!.sublist(0, board.chips.length);
             _changeTo(board.chips.length);
             return;
           } else {
-            // chips length < new chips length
+            /// chips length < new chips length
             final delta = board.chips.length - chips!.length;
             final newChips = List.generate(delta, (index) {
               final chip = board.chips[chips!.length + index];
               final x = chip.currentPoint.x / board.size;
               final y = chip.currentPoint.y / board.size;
-              final scale = 0.0; // will be scaled by the animation
+              const scale = 0.0; // will be scaled by the animation
               final color =
                   HSLColor.fromAHSL(1, hueStep * chip.number, 0.7, 0.5)
                       .toColor();
@@ -193,7 +194,7 @@ class _BoardWidgetState extends State<BoardWidget>
           }
         }
 
-        // Create our extras
+        /// Create our extras
         chips = board.chips.map((chip) {
           final x = chip.currentPoint.x / board.size;
           final y = chip.currentPoint.y / board.size;
@@ -208,8 +209,8 @@ class _BoardWidgetState extends State<BoardWidget>
     for (var chip in board.chips) {
       final extra = chips![chip.number];
       if (extra.currentPoint != chip.currentPoint || extra.touched) {
-        // The chip has been moved somewhere...
-        // animate the change!
+        /// The chip has been moved somewhere...
+        /// animate the change!
         final wasTouched = extra.touched;
         final wasCurrentPoint = extra.currentPoint;
         extra.touched = false;
@@ -220,12 +221,11 @@ class _BoardWidgetState extends State<BoardWidget>
     }
   }
 
-  // ---- Change the size of the board ----
-
+  /// ---- Change the size of the board ----
   void _startAppearAnimation(Chip chip) {
     final duration = Duration(
         milliseconds: _applyAnimationMultiplier(_ANIM_DURATION_BLINK_HALF));
-    final curve = Curves.easeIn;
+    const curve = Curves.easeIn;
 
     final controller = AnimationController(
       duration: duration,
@@ -250,11 +250,12 @@ class _BoardWidgetState extends State<BoardWidget>
         .then<void>((_) => _disposeAnimation(chip, _ANIM_SCALE_TAG));
   }
 
-  void _startColorBackgroundAnimation(Chip chip, {required Color from, required Color to}) {
+  void _startColorBackgroundAnimation(Chip chip,
+      {required Color from, required Color to}) {
     final duration = Duration(
         milliseconds:
             _applyAnimationMultiplier(_ANIM_DURATION_COLOR_BACKGROUND));
-    final curve = Curves.easeIn;
+    const curve = Curves.easeIn;
 
     final controller = AnimationController(
       duration: duration,
@@ -280,8 +281,7 @@ class _BoardWidgetState extends State<BoardWidget>
         .then<void>((_) => _disposeAnimation(chip, _ANIM_COLOR_BACKGROUND_TAG));
   }
 
-  // ---- Shuffle the chips ----
-
+  /// ---- Shuffle the chips ----
   void _onChipChangePosition(
     Chip chip,
     Point<int> from,
@@ -289,8 +289,8 @@ class _BoardWidgetState extends State<BoardWidget>
     bool enableColorAnimation = true,
   }) {
     if (from.x != to.x && from.y != to.y) {
-      // Chip can not be physically moved this way, play
-      // the blink animation along with move animation.
+      /// Chip can not be physically moved this way, play
+      /// the blink animation along with move animation.
       _startBlinkAnimation(chip, to);
     } else {
       _startMoveAnimation(chip, to);
@@ -316,8 +316,8 @@ class _BoardWidgetState extends State<BoardWidget>
     final oldX = target.x * board!.size;
     final oldY = target.y * board.size;
     animation.addListener(() {
-      // Calculate current point
-      // of the chip.
+      /// Calculate current point
+      /// of the chip.
       final x = (oldX * (1.0 - animation.value) + point.x * animation.value) /
           board.size;
       final y = (oldY * (1.0 - animation.value) + point.y * animation.value) /
@@ -329,8 +329,8 @@ class _BoardWidgetState extends State<BoardWidget>
       });
     });
 
-    // Start and dispose the animation
-    // after its finish.
+    /// Start and dispose the animation
+    /// after its finish.
     _addAnimation(chip, _ANIM_MOVE_TAG, controller);
     controller
         .forward()
@@ -340,7 +340,7 @@ class _BoardWidgetState extends State<BoardWidget>
   void _startBlinkAnimation(Chip chip, Point<int> point) {
     final duration = Duration(
         milliseconds: _applyAnimationMultiplier(_ANIM_DURATION_BLINK_HALF) * 2);
-    final curve = Curves.easeInOut;
+    const curve = Curves.easeInOut;
 
     void _startScaleAnimation(Chip chip, Point<int> point) {
       final controller = AnimationController(
@@ -457,19 +457,20 @@ class _BoardWidgetState extends State<BoardWidget>
       return SizedBox(
         width: widget.size,
         height: widget.size,
-        child: Center(
+        child: const Center(
           child: Text('Empty board'),
         ),
       );
     }
+
     final blank = _buildChipWidgetSkeleton(
       x: board.blank.x.toDouble() / board.size.toDouble(),
       y: board.blank.y.toDouble() / board.size.toDouble(),
       scale: 1.0,
       chip: (chipSize) => Semantics(
         label: "",
-        child: Text(
-          "Blank space",
+        child: const Text(
+          "X",
           style: TextStyle(color: Colors.transparent),
         ),
       ),
@@ -523,7 +524,7 @@ class _BoardWidgetState extends State<BoardWidget>
             ? () {
                 widget.onTap!(chip.currentPoint);
               }
-            : (){},
+            : () {},
       ),
     );
   }
@@ -605,7 +606,7 @@ class _BoardWidgetState extends State<BoardWidget>
       toPointScaled = bPointScaled;
     }
 
-    // Find the dependent on this movement chips.
+    /// Find the dependent on this movement chips.
     final group =
         (game.findChips(board, point: activeChip.currentPoint).toList()
               ..sort((a, b) {
@@ -617,10 +618,7 @@ class _BoardWidgetState extends State<BoardWidget>
                 chips?.firstWhere((c) => chip.currentPoint == c.currentPoint))
             .toList();
 
-    //
-    // Create an update delegate
-    //
-
+    /// Create an update delegate
     _onPanUpdateDelegate = (double dx, double dy) {
       final x = max(min(activeChip.x * boardWidgetSize + dx, toPointScaled.x),
               fromPointScaled.x) /
@@ -669,10 +667,7 @@ class _BoardWidgetState extends State<BoardWidget>
       });
     };
 
-    //
-    // Create an end delegate
-    //
-
+    /// Create an end delegate
     _onPanEndDelegate = (double vx, double vy) {
       final offsetX = _flingOffset(velocity: vx);
       final offsetY = _flingOffset(velocity: vy);
@@ -693,10 +688,9 @@ class _BoardWidgetState extends State<BoardWidget>
       );
 
       if (newTouchChipPoint != activeChip.currentPoint) {
-        if(widget.onTap != null){
+        if (widget.onTap != null) {
           widget.onTap!(activeChip.currentPoint);
         }
-
       } else if (group.length >= 2) {
         final nextToTouchChip = group[1];
         final nextToTouchChipPoint = Point(
@@ -781,7 +775,7 @@ class _Chip {
 
   Color overlayColor = Colors.white.withOpacity(0.0);
 
-  Map<String, AnimationController> animations = Map();
+  Map<String, AnimationController> animations = {};
 
   Point<int> currentPoint;
 
