@@ -6,12 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ConfigUiContainer extends StatefulWidget {
   final Widget child;
 
-  ConfigUiContainer({required this.child});
+  const ConfigUiContainer({super.key, required this.child});
 
   static _ConfigUiContainerState of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
-        .data;
+    return _ConfigUiContainerState();
   }
 
   @override

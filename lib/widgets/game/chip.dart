@@ -43,7 +43,7 @@ class ChipWidget extends StatelessWidget {
           color: color,
           elevation: 1,
           child: InkWell(
-            onTap: onPressed,
+            onTap: (){onPressed();},
             customBorder: shape,
             child: text != null
                 ? Center(

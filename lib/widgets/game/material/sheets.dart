@@ -17,7 +17,7 @@ Widget createMoreBottomSheet(
 }) {
   final config = ConfigUiContainer.of(context);
 
-  Widget createBoard({int size}) => Center(
+  Widget createBoard({required int size}) => Center(
         child: Column(
           children: <Widget>[
             Container(
@@ -105,14 +105,15 @@ Widget createMoreBottomSheet(
               showDialog(
                   context: context,
                   builder: (context) {
-                    return DonateDialog();
+                    // return DonateDialog();
+                    return Container(width: 100, height: 100, color: Colors.blue);
                   });
             },
           ),
         Expanded(
           child: Align(
             alignment: Alignment.centerRight,
-            child: OutlineButton(
+            child: FloatingActionButton(
               shape: const RoundedRectangleBorder(
                 borderRadius:
                     const BorderRadius.all(const Radius.circular(16.0)),
@@ -120,13 +121,11 @@ Widget createMoreBottomSheet(
               onPressed: () {
                 // Cycle themes like this:
                 // Auto -> Dark -> Light -> Auto ...
-                bool shouldUseDarkTheme;
+                bool shouldUseDarkTheme = false;
                 if (config.useDarkTheme == null) {
                   shouldUseDarkTheme = true;
                 } else if (config.useDarkTheme == true) {
                   shouldUseDarkTheme = false;
-                } else {
-                  shouldUseDarkTheme = null;
                 }
                 config.setUseDarkTheme(shouldUseDarkTheme, save: true);
               },
@@ -168,7 +167,7 @@ Widget createMoreBottomSheet(
       secondary: const Icon(Icons.timer),
       subtitle: const Text('Reduce animations and switch controls to taps'),
       value: config.isSpeedRunModeEnabled,
-      onChanged: (bool value) {
+      onChanged: (_) {
         var shouldEnableSpeedRun = !config.isSpeedRunModeEnabled;
         config.setSpeedRunModeEnabled(shouldEnableSpeedRun, save: true);
       },

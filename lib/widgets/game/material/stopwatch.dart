@@ -18,7 +18,7 @@ class GameStopwatchWidget extends StatefulWidget {
   GameStopwatchWidget({
     required this.time,
     required this.fontSize,
-    this.timeFormatter: formatElapsedTime,
+    this.timeFormatter = formatElapsedTime,
   });
 
   @override
@@ -27,10 +27,10 @@ class GameStopwatchWidget extends StatefulWidget {
 
 class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+  late AnimationController controller;
+  late Animation<double> animation;
 
-  Timer timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -103,21 +103,22 @@ class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
           SizedBox(
             width: 220.0,
             height: 108.0,
-            child: AutoSizeText(
-              timeStrAtStartOfMinute,
-              timeStr,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.headline5.copyWith(
-                    fontSize: widget.fontSize,
-                    color: Theme.of(context).textTheme.headline6.color,
-                  ),
-            ),
+            // child: AutoSizeText(
+            //   timeStrAtStartOfMinute,
+            //   timeStr,
+            //   maxLines: 1,
+            //   // style: Theme.of(context).textTheme.headline5.copyWith(
+            //   //       fontSize: widget.fontSize,
+            //   //       color: Theme.of(context).textTheme.headline6.color,
+            //   //     ),
+            // ),
+            child: Text(timeStrAtStartOfMinute + '||' + timeStr),
           ),
           const SizedBox(width: 16.0),
           StopwatchIcon(
             size: 24,
             millis: time,
-            color: Theme.of(context).iconTheme.color,
+            color: Theme.of(context).iconTheme.color ?? Colors.blue,
           ),
         ],
       ),

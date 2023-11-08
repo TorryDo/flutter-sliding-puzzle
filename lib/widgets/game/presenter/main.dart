@@ -14,13 +14,13 @@ class GamePresenterWidget extends StatefulWidget {
 
   final Widget child;
 
-  final Function(Result) onSolve;
+  final Function(Result)? onSolve;
 
   GamePresenterWidget({required this.child, this.onSolve});
 
   static GamePresenterWidgetState of(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
+        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()!
         .data;
   }
 
@@ -43,11 +43,11 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
 
   final Game game = Game.instance;
 
-  Board board;
+  Board? board;
 
-  int steps;
+  int? steps;
 
-  int time;
+  late int time;
 
   @override
   void initState() {
@@ -75,10 +75,10 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
       jsonMap = Map<String, dynamic>();
     }
 
-    int elapsedTime;
-    int time;
-    int steps;
-    Board board;
+    int elapsedTime = -1;
+    int? time;
+    int? steps;
+    Board? board;
 
     try {
       final deserializer = MapSerializeInput(map: jsonMap);
@@ -109,7 +109,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
     }
 
     setState(() {
-      this.time = time;
+      this.time = time ?? -1;
       this.steps = steps;
       this.board = board;
     });
@@ -133,7 +133,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
       time = now;
       steps = 0;
       board =
-          game.shuffle(game.hardest(board), amount: board.size * board.size);
+          game.shuffle(game.hardest(board!), amount: board!.size * board!.size);
     });
   }
 
@@ -159,20 +159,20 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
     assert(point != null);
 
     setState(() {
-      board = game.tap(board, point: point);
+      board = game.tap(board!, point: point);
 
       if (isPlaying()) {
         // Increment the amount of steps.
-        steps = steps + 1;
+        steps = steps! + 1;
 
         // Stop if a user has solved the
         // board.
-        if (board.isSolved()) {
+        if (board!.isSolved()) {
           final now = DateTime.now().millisecondsSinceEpoch;
           final result = Result(
-            steps: steps,
+            steps: steps!,
             time: now - time,
-            size: board.size,
+            size: board!.size,
           );
 
           widget.onSolve?.call(result);
@@ -198,9 +198,9 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
       var boardFuture;
       if (isPlaying()) {
         boardFuture =
-            game.shuffle(game.hardest(board), amount: board.size * board.size);
+            game.shuffle(game.hardest(board!), amount: board!.size * board!.size);
       } else {
-        boardFuture = _createBoard(board.size);
+        boardFuture = _createBoard(board!.size);
       }
 
       time = timeFuture;
@@ -231,7 +231,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
     if (board == null) {
       // Clear the current state, loading this will recreate
       // the board.
-      prefs.setString(_KEY_STATE, null);
+      prefs.remove(_KEY_STATE);
       return;
     }
 
@@ -242,8 +242,8 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
 
     serializer.writeInt(elapsedTime);
     serializer.writeInt(time);
-    serializer.writeInt(steps);
-    serializer.writeSerializable(board);
+    serializer.writeInt(steps!);
+    serializer.writeSerializable(board!);
 
     final plainText = serializer.toJsonString();
     final encryptedText = _encrypter.encrypt(plainText, iv: _SALSA_IV).base64;
@@ -252,7 +252,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
 
   @override
   Widget build(BuildContext context) {
-    return new _InheritedStateContainer(
+    return _InheritedStateContainer(
       data: this,
       child: widget.child,
     );
@@ -268,11 +268,11 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
 class _InheritedStateContainer extends InheritedWidget {
   final GamePresenterWidgetState data;
 
-  _InheritedStateContainer({
-    Key key,
+  const _InheritedStateContainer({
+    super.key,
     required this.data,
     required Widget child,
-  }) : super(key: key, child: child);
+  }) : super(child: child);
 
   @override
   bool updateShouldNotify(_InheritedStateContainer old) => true;

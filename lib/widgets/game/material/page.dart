@@ -53,7 +53,7 @@ class GameMaterialPage extends StatelessWidget {
                 : 72.0,
           ),
           GameStepsWidget(
-            steps: presenter.steps,
+            steps: presenter.steps ?? -1,
           ),
         ],
       );
@@ -188,11 +188,11 @@ class GameMaterialPage extends StatelessWidget {
                     return;
                 }
                 final tapPoint =
-                    presenter.board.blank + Point(offsetX, offsetY);
+                    presenter.board!.blank + Point(offsetX, offsetY);
                 if (tapPoint.x < 0 ||
-                    tapPoint.x >= presenter.board.size ||
+                    tapPoint.x >= presenter.board!.size ||
                     tapPoint.y < 0 ||
-                    tapPoint.y >= presenter.board.size) {
+                    tapPoint.y >= presenter.board!.size) {
                   return;
                 }
 

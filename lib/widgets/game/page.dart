@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:slide_puzzle/data/result.dart';
 import 'package:slide_puzzle/play_games.dart';
 import 'package:slide_puzzle/widgets/game/material/page.dart';
@@ -32,10 +34,11 @@ class GamePage extends StatelessWidget {
   }
 
   void _submitResult(BuildContext context, Result result) {
-    final playGames = PlayGamesContainer.of(context);
-    playGames.submitScore(
-      key: PlayGames.getLeaderboardOfSize(result.size),
-      time: result.time,
-    );
+    log('fake submit result ${result}');
+    // final playGames = PlayGamesContainer.of(context);
+    // playGames.submitScore(
+    //   key: PlayGames.getLeaderboardOfSize(result.size),
+    //   time: result.time,
+    // );
   }
 }

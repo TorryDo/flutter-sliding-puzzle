@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 class GamePlayStopButton extends StatefulWidget {
   final bool isPlaying;
 
-  final Function() onTap;
+  final Function()? onTap;
 
   GamePlayStopButton({
     required this.isPlaying,
@@ -21,8 +21,8 @@ class GamePlayStopButton extends StatefulWidget {
 
 class _GamePlayStopButtonState extends State<GamePlayStopButton>
     with TickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+  late AnimationController controller;
+  late Animation<double> animation;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _GamePlayStopButtonState extends State<GamePlayStopButton>
     final animRatioStop = _range(animation.value, begin: 0.0, end: 1.0);
 
     // Calculate the background color of the FAB.
-    final backgroundColorAccent = theme.accentColor.withOpacity(animRatioPlay);
+    final backgroundColorAccent = theme.dialogBackgroundColor.withOpacity(animRatioPlay);
     final backgroundColorCard = theme.cardColor.withOpacity(animRatioStop);
     final backgroundColor =
         Color.alphaBlend(backgroundColorAccent, backgroundColorCard);
@@ -86,7 +86,7 @@ class _GamePlayStopButtonState extends State<GamePlayStopButton>
               angle: animation.value * pi / 2.0,
               child: Icon(
                 Icons.play_arrow,
-                color: theme.accentIconTheme.color,
+                color: theme.iconTheme.color,
               ),
             ),
           ),

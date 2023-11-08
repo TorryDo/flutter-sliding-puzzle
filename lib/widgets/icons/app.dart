@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppIcon extends StatelessWidget {
   final double size;
 
-  const AppIcon({this.size}) : super();
+  const AppIcon({required this.size}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +20,10 @@ class AppIcon extends StatelessWidget {
           child: Center(
             child: Text(
               '15',
-              style: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.0,
-                  ),
+              // style: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 14.0,
+              //     ),
             ),
           ),
         ),
