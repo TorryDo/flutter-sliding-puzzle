@@ -1,7 +1,5 @@
-import 'package:slide_puzzle/links.dart';
-import 'package:slide_puzzle/utils/url.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
 
 class AboutDialog extends StatelessWidget {
   const AboutDialog({super.key});
@@ -34,7 +32,6 @@ class AboutDialog extends StatelessWidget {
           contentPadding: padding,
           title: const Text('Join development'),
           onTap: () {
-            launchUrl(url: URL_REPOSITORY);
           },
         ),
         ListTile(
@@ -42,7 +39,6 @@ class AboutDialog extends StatelessWidget {
           contentPadding: padding,
           title: const Text('Send bug report'),
           onTap: () {
-            launchUrl(url: URL_FEEDBACK);
           },
         ),
         const SizedBox(height: 24),

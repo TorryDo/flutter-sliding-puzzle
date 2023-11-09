@@ -1,25 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// Widget that can start / stop
 /// a game.
-class GamePlayStopButton extends StatefulWidget {
+class PlayStopButton extends StatefulWidget {
   final bool isPlaying;
 
   final Function()? onTap;
 
-  GamePlayStopButton({super.key,
+  const PlayStopButton({
+    super.key,
     required this.isPlaying,
     this.onTap,
   });
 
   @override
-  _GamePlayStopButtonState createState() => _GamePlayStopButtonState();
+  State<PlayStopButton> createState() => _PlayStopButtonState();
 }
 
-class _GamePlayStopButtonState extends State<GamePlayStopButton>
+class _PlayStopButtonState extends State<PlayStopButton>
     with TickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
@@ -44,7 +44,7 @@ class _GamePlayStopButtonState extends State<GamePlayStopButton>
   }
 
   @override
-  void didUpdateWidget(GamePlayStopButton oldWidget) {
+  void didUpdateWidget(PlayStopButton oldWidget) {
     super.didUpdateWidget(oldWidget);
     final wasPlaying = oldWidget.isPlaying;
     final isPlaying = widget.isPlaying;
@@ -69,7 +69,8 @@ class _GamePlayStopButtonState extends State<GamePlayStopButton>
     final animRatioStop = _range(animation.value, begin: 0.0, end: 1.0);
 
     // Calculate the background color of the FAB.
-    final backgroundColorAccent = theme.dialogBackgroundColor.withOpacity(animRatioPlay);
+    final backgroundColorAccent =
+        theme.dialogBackgroundColor.withOpacity(animRatioPlay);
     final backgroundColorCard = theme.cardColor.withOpacity(animRatioStop);
     final backgroundColor =
         Color.alphaBlend(backgroundColorAccent, backgroundColorCard);

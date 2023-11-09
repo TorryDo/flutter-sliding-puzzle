@@ -1,27 +1,23 @@
 import 'dart:math';
 
-import 'package:slide_puzzle/config/ui.dart';
-import 'package:slide_puzzle/widgets/game/board.dart';
-import 'package:slide_puzzle/widgets/game/material/control.dart';
-import 'package:slide_puzzle/widgets/game/material/sheets.dart';
-import 'package:slide_puzzle/widgets/game/material/steps.dart';
-import 'package:slide_puzzle/widgets/game/material/stopwatch.dart';
-import 'package:slide_puzzle/widgets/game/presenter/main.dart';
-import 'package:slide_puzzle/widgets/icons/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:slide_puzzle/config/ui.dart';
+import 'package:slide_puzzle/ui/screen/game/game_presenter.dart';
+import 'package:slide_puzzle/ui/screen/game/section/board.dart';
+import 'package:slide_puzzle/ui/screen/game/section/play_stop_button.dart';
+import 'package:slide_puzzle/ui/screen/game/section/stopwatch.dart';
 
-class GameMaterialPage extends StatelessWidget {
+class GameScreen extends StatelessWidget {
   /// Maximum size of the board,
   /// in pixels.
   static const kMaxBoardSize = 400.0;
-
   static const kBoardMargin = 16.0;
-
   static const kBoardPadding = 4.0;
 
   final FocusNode _boardFocus = FocusNode();
+
+  GameScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +48,10 @@ class GameMaterialPage extends StatelessWidget {
                 ? 50.0
                 : 65.0,
           ),
-          GameStepsWidget(
-            steps: presenter.steps ?? -1,
-          ),
+          Text(
+            '${presenter.steps ?? -1} steps',
+            style: Theme.of(context).textTheme.bodySmall,
+          )
         ],
       );
 
@@ -68,27 +65,17 @@ class GameMaterialPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 isTallScreen
-                    ? Container(
-                        height: 56,
+                    ? SizedBox(
+                        height: 50,
                         child: Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const AppIcon(size: 24.0),
-                              const SizedBox(width: 16.0),
-                              Text(
-                                'Game of Fifteen',
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                            ],
-                          ),
-                        ),
+                            child: Text(
+                          'Sliding Puzzle',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        )),
                       )
                     : const SizedBox(height: 0),
-                const SizedBox(height: 32.0),
-                Center(
-                  child: statusWidget,
-                ),
+                const SizedBox(height: 16.0),
+                Center(child: statusWidget),
                 const SizedBox(height: 16.0),
                 Expanded(
                   child: Align(
@@ -97,8 +84,8 @@ class GameMaterialPage extends StatelessWidget {
                   ),
                 ),
                 isLargeScreen && isTallScreen
-                    ? const SizedBox(height: 116.0)
-                    : const SizedBox(height: 72.0),
+                    ? const SizedBox(height: 116)
+                    : const SizedBox(height: 72),
               ],
             ),
           ),
@@ -114,20 +101,17 @@ class GameMaterialPage extends StatelessWidget {
           body: SafeArea(
             child: Row(
               children: <Widget>[
+                Expanded(flex: 3, child: boardWidget),
                 Expanded(
-                  child: boardWidget,
-                  flex: 3,
-                ),
-                Expanded(
+                  flex: 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       statusWidget,
-                      SizedBox(height: 48.0),
+                      const SizedBox(height: 48.0),
                       fabWidget,
                     ],
                   ),
-                  flex: 2,
                 ),
               ],
             ),
@@ -143,21 +127,21 @@ class GameMaterialPage extends StatelessWidget {
     final background = Theme.of(context).brightness == Brightness.dark
         ? Colors.black54
         : Colors.black12;
+
+    const borderRadius = 14.0;
+
     return Center(
       child: Container(
-        margin: EdgeInsets.all(kBoardMargin),
-        padding: EdgeInsets.all(kBoardPadding),
+        margin: const EdgeInsets.all(kBoardMargin),
+        padding: const EdgeInsets.all(kBoardPadding),
         decoration: BoxDecoration(
           color: background,
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             final puzzleSize = min(
-              min(
-                constraints.maxWidth,
-                constraints.maxHeight,
-              ),
+              min(constraints.maxWidth, constraints.maxHeight),
               kMaxBoardSize - (kBoardMargin + kBoardPadding) * 2,
             );
 
@@ -165,7 +149,7 @@ class GameMaterialPage extends StatelessWidget {
               autofocus: true,
               focusNode: _boardFocus,
               onKey: (event) {
-                if (!(event is RawKeyDownEvent)) {
+                if (event is! RawKeyDownEvent) {
                   return;
                 }
 
@@ -218,19 +202,19 @@ class GameMaterialPage extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Container(
+        SizedBox(
           width: 48,
           height: 48,
           child: Material(
             elevation: 0.0,
             color: Colors.transparent,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             child: InkWell(
               onTap: () {
                 presenter.reset();
               },
-              customBorder: CircleBorder(),
-              child: Icon(
+              customBorder: const CircleBorder(),
+              child: const Icon(
                 Icons.refresh,
                 semanticLabel: "Reset",
               ),
@@ -238,20 +222,18 @@ class GameMaterialPage extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16.0),
-        GamePlayStopButton(
+        PlayStopButton(
           isPlaying: presenter.isPlaying(),
-          onTap: () {
-            presenter.playStop();
-          },
+          onTap: () => presenter.playStop(),
         ),
         const SizedBox(width: 16.0),
-        Container(
+        SizedBox(
           width: 48,
           height: 48,
           child: Material(
             elevation: 0.0,
             color: Colors.transparent,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             child: InkWell(
               onTap: () {
                 // Show the modal bottom sheet on
@@ -260,14 +242,12 @@ class GameMaterialPage extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) {
-                    return createMoreBottomSheet(context, call: (size) {
-                      presenter.resize(size);
-                    });
+                    return _bottomSheet(presenter);
                   },
                 );
               },
-              customBorder: CircleBorder(),
-              child: Icon(
+              customBorder: const CircleBorder(),
+              child: const Icon(
                 Icons.more_vert,
                 semanticLabel: "Settings",
               ),
@@ -275,6 +255,45 @@ class GameMaterialPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _bottomSheet(GamePresenterWidgetState presenter) {
+    return Container(
+      height: 300,
+      color: Colors.white,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  presenter.resize(3);
+                },
+                child: const Text('3x3'),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  presenter.resize(4);
+                },
+                child: const Text('4x4'),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  presenter.resize(5);
+                },
+                child: const Text('5x5'),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Switch Theme'),
+          )
+        ],
+      ),
     );
   }
 }

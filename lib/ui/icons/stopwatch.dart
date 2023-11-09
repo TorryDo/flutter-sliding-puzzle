@@ -9,7 +9,7 @@ class StopwatchIcon extends StatelessWidget {
 
   final Color color;
 
-  StopwatchIcon({
+  const StopwatchIcon({super.key,
     required this.size,
     required this.millis,
     required this.color,
@@ -17,7 +17,7 @@ class StopwatchIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: size,
       height: size,
       child: CustomPaint(

@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/result.dart';
-import 'package:slide_puzzle/domain/game.dart';
+import 'package:slide_puzzle/ui/screen/game/game_logic.dart';
 import 'package:slide_puzzle/utils/serializable.dart';
 
 class GamePresenterWidget extends StatefulWidget {
@@ -45,7 +45,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
   /// make hacking a lil bit harder.
   final _encrypter = encrypt.Encrypter(encrypt.Salsa20(_SALSA_KEY));
 
-  final Game game = Game.instance;
+  final GameLogic game = GameLogic.instance;
 
   Board? board;
 
@@ -136,8 +136,10 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
     setState(() {
       time = now;
       steps = 0;
-      board =
-          game.shuffle(game.hardest(board!), amount: board!.size * board!.size);
+      board = game.shuffle(
+        game.hardest(board!),
+        amount: board!.size * board!.size,
+      );
     });
   }
 
@@ -275,8 +277,8 @@ class _InheritedStateContainer extends InheritedWidget {
   const _InheritedStateContainer({
     super.key,
     required this.data,
-    required Widget child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(_InheritedStateContainer old) => true;

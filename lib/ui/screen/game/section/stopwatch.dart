@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:slide_puzzle/widgets/game/format.dart';
-import 'package:slide_puzzle/widgets/icons/stopwatch.dart';
+import 'package:slide_puzzle/ui/icons/stopwatch.dart';
+import 'package:slide_puzzle/ui/screen/game/utils/format.dart';
 
 /// Widget shows the current time of
 /// a game.
@@ -21,7 +21,7 @@ class GameStopwatchWidget extends StatefulWidget {
   });
 
   @override
-  _GameStopwatchWidgetState createState() => _GameStopwatchWidgetState();
+  State<GameStopwatchWidget> createState() => _GameStopwatchWidgetState();
 }
 
 class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
@@ -100,7 +100,7 @@ class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            width: 200,
+            width: 250,
             child: Text(
               timeStr,
               style: Theme.of(context)
@@ -109,7 +109,7 @@ class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
                   ?.copyWith(color: Colors.black, fontSize: widget.fontSize),
             ),
           ),
-          const SizedBox(width: 16.0),
+          // const SizedBox(width: 16.0),
           StopwatchIcon(
             size: 24,
             millis: time,

@@ -1,25 +1,22 @@
-import 'package:flutter/material.dart' hide Chip;
+import 'package:flutter/material.dart';
 
-class ChipWidget extends StatelessWidget {
+class BoardCell extends StatelessWidget {
   final String text;
+  final Color overlayColor;
+  final Color backgroundColor;
+  final double fontSize;
+  final double size;
 
   final Function onPressed;
 
-  final Color overlayColor;
-
-  final Color backgroundColor;
-
-  final double fontSize;
-
-  final double size;
-
-  ChipWidget(
-    this.text,
-    this.overlayColor,
-    this.backgroundColor,
-    this.fontSize, {
-    required this.onPressed,
+  const BoardCell({
+    super.key,
+    required this.text,
+    required this.overlayColor,
+    required this.backgroundColor,
+    required this.fontSize,
     required this.size,
+    required this.onPressed,
   });
 
   @override
@@ -41,21 +38,19 @@ class ChipWidget extends StatelessWidget {
         child: Material(
           shape: shape,
           color: color,
-          elevation: 1,
+          elevation: 2,
           child: InkWell(
-            onTap: (){onPressed();},
+            onTap: () => onPressed(),
             customBorder: shape,
-            child: text != null
-                ? Center(
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize,
-                      ),
-                    ),
-                  )
-                : null,
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize,
+                ),
+              ),
+            ),
           ),
         ),
       ),

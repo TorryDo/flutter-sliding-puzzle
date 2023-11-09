@@ -2,10 +2,11 @@ import 'dart:math';
 
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/chip.dart';
-import 'package:slide_puzzle/domain/starting_positions.dart';
 
-abstract class Game {
-  static Game instance = _GameImpl();
+import 'utils/starting_positions.dart';
+
+abstract class GameLogic {
+  static GameLogic instance = _GameLogicImpl();
 
   Board hardest(Board board);
 
@@ -15,39 +16,30 @@ abstract class Game {
 
   Board tap(Board board, {required Point<int> point});
 
-  Point<int> findChipPositionAfterTap(Board board,
-      {required Point<int> point});
+  Point<int> findChipPositionAfterTap(Board board, {required Point<int> point});
 
   /// Returns the chips that are free to move,
   /// including a chip at the point.
   Iterable<Chip> findChips(Board board, {required Point<int> point});
 }
 
-class _GameImpl implements Game {
+class _GameLogicImpl implements GameLogic {
   @override
   Board hardest(Board board) {
     List<List<int>> variants;
 
     switch (board.size) {
       case 3:
-        {
-          variants = STARTING_POSITIONS_3X3;
-          break;
-        }
+        variants = STARTING_POSITIONS_3X3;
+        break;
       case 4:
-        {
-          variants = STARTING_POSITIONS_4X4;
-          break;
-        }
+        variants = STARTING_POSITIONS_4X4;
+        break;
       case 5:
-        {
-          variants = STARTING_POSITIONS_5X5;
-          break;
-        }
+        variants = STARTING_POSITIONS_5X5;
+        break;
       default:
-        {
-          return shuffle(board);
-        }
+        return shuffle(board);
     }
 
     final variant = variants[Random().nextInt(variants.length)];
@@ -82,10 +74,10 @@ class _GameImpl implements Game {
       });
     });
 
-    board.chips.forEach((chip) {
+    for (var chip in board.chips) {
       final pos = chip.currentPoint;
       matrix[pos.x][pos.y] = chip;
-    });
+    }
 
     // Perform the shuffling
     var blankX = board.blank.x;
@@ -158,7 +150,8 @@ class _GameImpl implements Game {
   }
 
   @override
-  Point<int> findChipPositionAfterTap(Board board, {required Point<int> point}) {
+  Point<int> findChipPositionAfterTap(Board board,
+      {required Point<int> point}) {
     int dx;
     int dy;
     if (point.x == board.blank.x) {

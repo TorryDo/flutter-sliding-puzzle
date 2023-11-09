@@ -27,7 +27,7 @@ class _ConfigUiContainerState extends State<ConfigUiContainer> {
 
   /// `true` if the app uses a global dark theme,
   /// `false` otherwise.
-  bool useDarkTheme = false;
+  bool? useDarkTheme = false;
 
   bool isSpeedRunModeEnabled = false;
 

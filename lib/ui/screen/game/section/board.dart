@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart' hide Chip;
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/chip.dart';
-import 'package:slide_puzzle/domain/game.dart';
-import 'package:slide_puzzle/widgets/game/chip.dart';
+import 'package:slide_puzzle/ui/screen/game/game_logic.dart';
+import 'package:slide_puzzle/ui/screen/game/section/board_cell.dart';
 
 class BoardWidget extends StatefulWidget {
   final Board? board;
@@ -27,7 +27,7 @@ class BoardWidget extends StatefulWidget {
   }) : super();
 
   @override
-  _BoardWidgetState createState() => _BoardWidgetState();
+  State<BoardWidget> createState() => _BoardWidgetState();
 }
 
 class _BoardWidgetState extends State<BoardWidget>
@@ -135,7 +135,7 @@ class _BoardWidgetState extends State<BoardWidget>
       setState(() {
         final hueStep = 360 / board.chips.length;
 
-        void _changeTo(int length) {
+        void changeTo(int length) {
           for (var i = 0; i < length; i++) {
             final chip = board.chips[i];
             final extra = chips![i];
@@ -161,7 +161,7 @@ class _BoardWidgetState extends State<BoardWidget>
           if (chips!.length > board.chips.length) {
             /// Remove a few chips with a smooth animation.
             chips = chips!.sublist(0, board.chips.length);
-            _changeTo(board.chips.length);
+            changeTo(board.chips.length);
             return;
           } else {
             /// chips length < new chips length
@@ -189,7 +189,7 @@ class _BoardWidgetState extends State<BoardWidget>
               _startAppearAnimation(board.chips[i]);
             }
 
-            _changeTo(oldBoard.chips.length);
+            changeTo(oldBoard.chips.length);
             return;
           }
         }
@@ -316,8 +316,8 @@ class _BoardWidgetState extends State<BoardWidget>
     final oldX = target.x * board!.size;
     final oldY = target.y * board.size;
     animation.addListener(() {
-      /// Calculate current point
-      /// of the chip.
+      // Calculate current point
+      // of the chip.
       final x = (oldX * (1.0 - animation.value) + point.x * animation.value) /
           board.size;
       final y = (oldY * (1.0 - animation.value) + point.y * animation.value) /
@@ -329,8 +329,8 @@ class _BoardWidgetState extends State<BoardWidget>
       });
     });
 
-    /// Start and dispose the animation
-    /// after its finish.
+    // Start and dispose the animation
+    // after its finish.
     _addAnimation(chip, _ANIM_MOVE_TAG, controller);
     controller
         .forward()
@@ -514,17 +514,17 @@ class _BoardWidgetState extends State<BoardWidget>
       x: extra.x,
       y: extra.y,
       scale: extra.scale,
-      chip: (chipSize) => ChipWidget(
-        widget.showNumbers ? "${chip.number + 1}" : '-',
-        overlayColor,
-        backgroundColor,
-        chipSize / 3,
+      chip: (chipSize) => BoardCell(
+        text: widget.showNumbers ? "${chip.number + 1}" : '-',
+        overlayColor: overlayColor,
+        backgroundColor: backgroundColor,
+        fontSize: chipSize / 3,
         size: widget.size,
-        onPressed: widget.onTap != null && !_isSpeedRunModeEnabled
-            ? () {
-                widget.onTap!(chip.currentPoint);
-              }
-            : () {},
+        onPressed: () {
+          if (widget.onTap != null && !_isSpeedRunModeEnabled) {
+            widget.onTap!(chip.currentPoint);
+          }
+        },
       ),
     );
   }
@@ -583,7 +583,7 @@ class _BoardWidgetState extends State<BoardWidget>
       return;
     }
 
-    final game = Game.instance;
+    final game = GameLogic.instance;
 
     // Calculate the range of possible movement of
     // a touched chip.
