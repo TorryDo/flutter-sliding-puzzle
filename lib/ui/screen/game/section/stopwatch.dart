@@ -103,10 +103,10 @@ class _GameStopwatchWidgetState extends State<GameStopwatchWidget>
             width: 250,
             child: Text(
               timeStr,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium
-                  ?.copyWith(color: Colors.black, fontSize: widget.fontSize),
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: Theme.of(context).iconTheme.color,
+                    fontSize: widget.fontSize,
+                  ),
             ),
           ),
           // const SizedBox(width: 16.0),

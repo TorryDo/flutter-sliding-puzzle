@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:slide_puzzle/config/ui.dart';
+import 'package:slide_puzzle/config/app_themes.dart';
 import 'package:slide_puzzle/ui/screen/game/game_screen_presenter.dart';
 import 'package:slide_puzzle/ui/screen/game/section/board.dart';
 import 'package:slide_puzzle/ui/screen/game/section/play_stop_button.dart';
 import 'package:slide_puzzle/ui/screen/game/section/stopwatch.dart';
+import 'package:slide_puzzle/ui/screen/theme_provider.dart';
+import 'package:slide_puzzle/utils/lib/provider/provider_ext.dart';
 
 class GameScreen extends StatelessWidget {
   /// Maximum size of the board,
@@ -123,7 +125,6 @@ class GameScreen extends StatelessWidget {
 
   Widget _buildBoard(final BuildContext context) {
     final presenter = GameScreenPresenter.of(context);
-    final config = ConfigUiContainer.of(context);
     final background = Theme.of(context).brightness == Brightness.dark
         ? Colors.black54
         : Colors.black12;
@@ -183,7 +184,7 @@ class GameScreen extends StatelessWidget {
                 presenter.tap(point: tapPoint);
               },
               child: BoardWidget(
-                isSpeedRunModeEnabled: config.isSpeedRunModeEnabled,
+                isSpeedRunModeEnabled: false,
                 board: presenter.board,
                 size: puzzleSize,
                 onTap: (point) {
@@ -199,6 +200,7 @@ class GameScreen extends StatelessWidget {
 
   Widget _buildFab(final BuildContext context) {
     final presenter = GameScreenPresenter.of(context);
+    final themeProvider = context.provider<ThemeProvider>();
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -242,7 +244,7 @@ class GameScreen extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) {
-                    return _bottomSheet(presenter);
+                    return _bottomSheet(presenter, themeProvider);
                   },
                 );
               },
@@ -258,7 +260,8 @@ class GameScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomSheet(GameScreenPresenterState presenter) {
+  Widget _bottomSheet(
+      GameScreenPresenterState presenter, ThemeProvider themeProvider) {
     return Container(
       height: 300,
       color: Colors.white,
@@ -289,7 +292,13 @@ class GameScreen extends StatelessWidget {
             ],
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              if (themeProvider.useDarkTheme) {
+                themeProvider.switchTheme(AppThemeOptions.light);
+              } else {
+                themeProvider.switchTheme(AppThemeOptions.dark);
+              }
+            },
             child: const Text('Switch Theme'),
           )
         ],

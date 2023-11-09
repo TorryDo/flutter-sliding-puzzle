@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Chip;
+import 'package:slide_puzzle/config/app_colors.dart';
 import 'package:slide_puzzle/data/board.dart';
 import 'package:slide_puzzle/data/chip.dart';
 import 'package:slide_puzzle/ui/screen/game/game_logic.dart';
@@ -507,8 +508,9 @@ class _BoardWidgetState extends State<BoardWidget>
 
     // Calculate the colors.
     final overlayColor = extra.overlayColor;
-    final backgroundColor =
-        extra.backgroundColor.withOpacity(dst < 1 ? 1 - dst : 0);
+    // final backgroundColor =
+    //     extra.backgroundColor.withOpacity(dst < 1 ? 1 - dst : 0);
+    final backgroundColor = AppColors.blue.withOpacity(dst < 1 ? 1 - dst : 0);
 
     return _buildChipWidgetSkeleton(
       x: extra.x,
