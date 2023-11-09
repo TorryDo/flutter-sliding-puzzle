@@ -9,30 +9,30 @@ import 'package:slide_puzzle/data/result.dart';
 import 'package:slide_puzzle/ui/screen/game/game_logic.dart';
 import 'package:slide_puzzle/utils/serializable.dart';
 
-class GamePresenterWidget extends StatefulWidget {
+class GameScreenPresenter extends StatefulWidget {
   static const SUPPORTED_SIZES = [3, 4, 5];
 
   final Widget child;
 
   final Function(Result)? onSolve;
 
-  const GamePresenterWidget({
+  const GameScreenPresenter({
     super.key,
     required this.child,
     this.onSolve,
   });
 
-  static GamePresenterWidgetState of(BuildContext context) {
+  static GameScreenPresenterState of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()!
         .data;
   }
 
   @override
-  GamePresenterWidgetState createState() => GamePresenterWidgetState();
+  State<GameScreenPresenter> createState() => GameScreenPresenterState();
 }
 
-class GamePresenterWidgetState extends State<GamePresenterWidget>
+class GameScreenPresenterState extends State<GameScreenPresenter>
     with WidgetsBindingObserver {
   static const TIME_STOPPED = 0;
 
@@ -272,7 +272,7 @@ class GamePresenterWidgetState extends State<GamePresenterWidget>
 }
 
 class _InheritedStateContainer extends InheritedWidget {
-  final GamePresenterWidgetState data;
+  final GameScreenPresenterState data;
 
   const _InheritedStateContainer({
     super.key,

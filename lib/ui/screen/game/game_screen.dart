@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:slide_puzzle/config/ui.dart';
-import 'package:slide_puzzle/ui/screen/game/game_presenter.dart';
+import 'package:slide_puzzle/ui/screen/game/game_screen_presenter.dart';
 import 'package:slide_puzzle/ui/screen/game/section/board.dart';
 import 'package:slide_puzzle/ui/screen/game/section/play_stop_button.dart';
 import 'package:slide_puzzle/ui/screen/game/section/stopwatch.dart';
@@ -21,7 +21,7 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final presenter = GamePresenterWidget.of(context);
+    final presenter = GameScreenPresenter.of(context);
 
     final screenSize = MediaQuery.of(context).size;
     final screenWidth =
@@ -122,7 +122,7 @@ class GameScreen extends StatelessWidget {
   }
 
   Widget _buildBoard(final BuildContext context) {
-    final presenter = GamePresenterWidget.of(context);
+    final presenter = GameScreenPresenter.of(context);
     final config = ConfigUiContainer.of(context);
     final background = Theme.of(context).brightness == Brightness.dark
         ? Colors.black54
@@ -198,7 +198,7 @@ class GameScreen extends StatelessWidget {
   }
 
   Widget _buildFab(final BuildContext context) {
-    final presenter = GamePresenterWidget.of(context);
+    final presenter = GameScreenPresenter.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -258,7 +258,7 @@ class GameScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomSheet(GamePresenterWidgetState presenter) {
+  Widget _bottomSheet(GameScreenPresenterState presenter) {
     return Container(
       height: 300,
       color: Colors.white,

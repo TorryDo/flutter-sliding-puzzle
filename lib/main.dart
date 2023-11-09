@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_puzzle/config/ui.dart';
-import 'package:slide_puzzle/ui/screen/game/game_presenter.dart';
+import 'package:slide_puzzle/data/result.dart';
+import 'package:slide_puzzle/ui/screen/game/game_screen_presenter.dart';
 import 'package:slide_puzzle/ui/screen/game/game_screen.dart';
 import 'package:slide_puzzle/ui/screen/game/section/victory.dart';
 import 'package:slide_puzzle/ui/screen/theme_provider.dart';
@@ -51,9 +52,9 @@ class MyApp extends StatelessWidget {
       theme: AppThemes.lightTheme,
       home: Builder(
         builder: (context) {
-          return GamePresenterWidget(
+          return GameScreenPresenter(
             child: GameScreen(),
-            onSolve: (result) {
+            onSolve: (Result result) {
               showDialog(
                 context: context,
                 builder: (context) => GameVictoryDialog(result: result),

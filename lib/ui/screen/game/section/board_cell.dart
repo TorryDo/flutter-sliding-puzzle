@@ -40,6 +40,8 @@ class BoardCell extends StatelessWidget {
           color: color,
           elevation: 2,
           child: InkWell(
+            splashFactory: NoSplash.splashFactory,
+            highlightColor: Colors.transparent,
             onTap: () => onPressed(),
             customBorder: shape,
             child: Center(
